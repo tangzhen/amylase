@@ -18,6 +18,7 @@ function findRouteHasChild(route, options) {
 describe('Create Route', () => {
   const componentOne = () => {};
   const componentTwo = () => {};
+  const componentThree = () => {};
 
   if (ReactRouter013) {
     context('v0.13.x', () => {
@@ -46,6 +47,27 @@ describe('Create Route', () => {
         const route = createRoute(routeConfig);
 
         expect(findRouteHasChild(route, {handler: componentTwo})).to.be.true;
+      });
+
+      it('should use childRoutes to create child route', () => {
+        const routeConfig = {
+          name: 'appName',
+          path: '/',
+          component: componentOne,
+          childRoutes: [{
+            name: 'routeOne',
+            path: 'one',
+            component: componentTwo
+          }, {
+            name: 'routeTwo',
+            path: 'two',
+            component: componentThree
+          }]
+        };
+
+        const route = createRoute(routeConfig);
+        expect(findRouteHasChild(route, {name: 'routeOne', path: '/one', handler: componentTwo})).to.be.true;
+        expect(findRouteHasChild(route, {name: 'routeTwo', path: '/two', handler: componentThree})).to.be.true;
       });
     });
   }

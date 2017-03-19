@@ -3,14 +3,22 @@ import ReactRouter from 'react-router';
 
 function createRoute(options) {
   if (ReactRouter013) {
-    const param = {
-      name: options.name,
-      path: options.path,
-      handler: options.component
+    const convertRouteOptions = (oldOptions) => {
+      return {
+        name: oldOptions.name,
+        path: oldOptions.path,
+        handler: oldOptions.component
+      };
     };
-    const route = ReactRouter.createRoute(param);
+
+    const route = ReactRouter.createRoute(convertRouteOptions(options));
     if (options.indexRoute) {
       route.appendChild(ReactRouter.createDefaultRoute({handler: options.indexRoute.component}));
+    }
+    if (Array.isArray(options.childRoutes)) {
+      options.childRoutes.forEach((childRoute) => {
+        route.appendChild(ReactRouter.createRoute(convertRouteOptions(childRoute)));
+      })
     }
     return route;
   }
