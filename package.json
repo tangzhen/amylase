@@ -1,0 +1,30 @@
+{
+  "name": "amylase",
+  "version": "0.0.1",
+  "description": "react router creator",
+  "main": "build",
+  "scripts": {
+    "build": "babel src --out-dir build",
+    "clean": "rimraf build",
+    "lint": "eslint --ext js,jsx src test",
+    "test": "npm run clean && npm run build && npm run test:only",
+    "test:only": "mocha --recursive test",
+    "reactrouter:clean": "rimraf node_modules/react-router node_modules/react node_modules/react-dom node_modules/react-addons-test-utils",
+    "reactrouter:13": "npm run reactrouter:clean && npm i react-router@0.13.6 react@0.13 && npm install"
+  },
+  "keywords": [
+    "react-router"
+  ],
+  "author": "TangZhen",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "7.0.0-alpha.2",
+    "babel-plugin-transform-export-extensions": "7.0.0-alpha.1",
+    "babel-preset-env": "2.0.0-alpha.1",
+    "babel-register": "7.0.0-alpha.2",
+    "chai": "^3.5.0",
+    "eslint": "^3.18.0",
+    "mocha": "^3.2.0",
+    "rimraf": "^2.6.1"
+  }
+}
