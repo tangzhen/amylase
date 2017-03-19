@@ -8,7 +8,11 @@ function createRoute(options) {
       path: options.path,
       handler: options.component
     };
-    return ReactRouter.createRoute(param);
+    const route = ReactRouter.createRoute(param);
+    if (options.indexRoute) {
+      route.appendChild(ReactRouter.createDefaultRoute({handler: options.indexRoute.component}));
+    }
+    return route;
   }
 }
 
