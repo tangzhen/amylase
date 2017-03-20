@@ -54,7 +54,7 @@ describe('Create Route', () => {
           name: 'appName',
           path: '/',
           component: componentOne,
-          childRoutes: [{
+          routes: [{
             name: 'routeOne',
             path: 'one',
             component: componentTwo
@@ -68,6 +68,10 @@ describe('Create Route', () => {
         const route = createRoute(routeConfig);
         expect(findRouteHasChild(route, {name: 'routeOne', path: '/one', handler: componentTwo})).to.be.true;
         expect(findRouteHasChild(route, {name: 'routeTwo', path: '/two', handler: componentThree})).to.be.true;
+      });
+
+      it('should use redirect to create redirect route', () => {
+
       });
     });
   }

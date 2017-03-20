@@ -15,8 +15,8 @@ function createRoute(options) {
     if (options.indexRoute) {
       route.appendChild(ReactRouter.createDefaultRoute({handler: options.indexRoute.component}));
     }
-    if (Array.isArray(options.childRoutes)) {
-      options.childRoutes.forEach((childRoute) => {
+    if (Array.isArray(options.routes)) {
+      options.routes.forEach((childRoute) => {
         route.appendChild(ReactRouter.createRoute(convertRouteOptions(childRoute)));
       })
     }
