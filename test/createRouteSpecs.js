@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import {Redirect} from 'react-router';
 import {ReactRouter013} from '../src/version';
 import {createRoute} from '../build';
 import _ from 'lodash';
@@ -71,7 +72,28 @@ describe('Create Route', () => {
       });
 
       it('should use redirect to create redirect route', () => {
+        const routeConfig = {
+          name: 'appName',
+          path: '/',
+          component: componentOne,
+          routes: [{
+            name: 'routeOne',
+            path: 'one',
+            component: componentTwo
+          }, {
+            name: 'routeTwo',
+            path: 'two',
+            component: componentThree
+          }, {
+            name: '404',
+            from: '/*',
+            to: '/',
+            component: Redirect
+          }]
+        };
 
+        const route = createRoute(routeConfig);
+        expect(findRouteHasChild(route, {path: '/*'})).to.be.true;
       });
     });
   }

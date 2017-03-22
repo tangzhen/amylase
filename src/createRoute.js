@@ -17,7 +17,11 @@ function createRoute(options) {
     }
     if (Array.isArray(options.routes)) {
       options.routes.forEach((childRoute) => {
-        route.appendChild(ReactRouter.createRoute(convertRouteOptions(childRoute)));
+        if (ReactRouter.Redirect === childRoute.component) {
+          route.appendChild(ReactRouter.createRedirect(childRoute));
+        } else {
+          route.appendChild(ReactRouter.createRoute(convertRouteOptions(childRoute)));
+        }
       })
     }
     return route;
