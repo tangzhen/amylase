@@ -12,22 +12,18 @@ function createRoute(options) {
     };
 
     const route = ReactRouter.createRoute(convertRouteOptions(options));
-    if (options.indexRoute) {
-      route.appendChild(ReactRouter.createDefaultRoute({handler: options.indexRoute.component}));
-    }
 
     const createRoutes = (parentRoot, routes) => {
       if (Array.isArray(routes)) {
         routes.forEach((route, index) => {
           if (ReactRouter.Redirect === route.component) {
-            parentRoot.appendChild(ReactRouter.createRedirect(route));
+            ReactRouter.createRedirect(Object.assign({}, route, {parentRoute: parentRoot}));
           } else if (index === 0 && route.path === undefined) {
-            parentRoot.appendChild(ReactRouter.createDefaultRoute(convertRouteOptions(route)));
+            ReactRouter.createDefaultRoute(Object.assign({}, convertRouteOptions(route), {parentRoute: parentRoot}));
           } else {
-            const newRoute = ReactRouter.createRoute(convertRouteOptions(route));
-            parentRoot.appendChild(newRoute);
+            const newRoute = ReactRouter.createRoute(Object.assign({}, convertRouteOptions(route), {parentRoute: parentRoot}));
 
-            if(route.routes) {
+            if (route.routes) {
               createRoutes(newRoute, route.routes);
             }
           }

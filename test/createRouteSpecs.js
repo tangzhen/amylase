@@ -36,20 +36,6 @@ describe('Create Route', () => {
         expect(route.handler).to.be.equal(componentOne);
       });
 
-      it('should use indexRoute to create DefaultHandler', () => {
-        const routeConfig = {
-          name: 'appName',
-          path: '/',
-          component: componentOne,
-          indexRoute: {
-            component: componentTwo
-          }
-        };
-        const route = createRoute(routeConfig);
-
-        expect(findRouteHasChild(route, {handler: componentTwo})).to.be.true;
-      });
-
       it('should use childRoutes to create child route', () => {
         const routeConfig = {
           name: 'appName',
