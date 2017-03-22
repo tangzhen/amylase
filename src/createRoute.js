@@ -15,15 +15,25 @@ function createRoute(options) {
     if (options.indexRoute) {
       route.appendChild(ReactRouter.createDefaultRoute({handler: options.indexRoute.component}));
     }
-    if (Array.isArray(options.routes)) {
-      options.routes.forEach((childRoute) => {
-        if (ReactRouter.Redirect === childRoute.component) {
-          route.appendChild(ReactRouter.createRedirect(childRoute));
-        } else {
-          route.appendChild(ReactRouter.createRoute(convertRouteOptions(childRoute)));
-        }
-      })
-    }
+
+    const createRoutes = (parentRoot, routes) => {
+      if (Array.isArray(routes)) {
+        routes.forEach((route) => {
+          if (ReactRouter.Redirect === route.component) {
+            parentRoot.appendChild(ReactRouter.createRedirect(route));
+          } else {
+            const newRoute = ReactRouter.createRoute(convertRouteOptions(route));
+            parentRoot.appendChild(newRoute);
+
+            if(route.routes) {
+              createRoutes(newRoute, route.routes);
+            }
+          }
+        })
+      }
+    };
+
+    createRoutes(route, options.routes);
     return route;
   }
 }

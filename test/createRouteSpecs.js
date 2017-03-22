@@ -95,6 +95,30 @@ describe('Create Route', () => {
         const route = createRoute(routeConfig);
         expect(findRouteHasChild(route, {path: '/*'})).to.be.true;
       });
+
+      it('should convert nested routes', () => {
+        const routeConfig = {
+          name: 'appName',
+          path: '/',
+          component: componentOne,
+          routes: [{
+            name: 'routeOne',
+            path: 'one',
+            component: componentTwo,
+            routes: [{
+              name: 'routeTwo',
+              path: 'two',
+              component: componentThree
+            }]
+          }]
+        };
+
+        const route = createRoute(routeConfig);
+        const routeTwo = route.childRoutes[0].childRoutes[0];
+
+        expect(routeTwo.name).to.be.equal('routeTwo');
+        expect(routeTwo.handler).to.be.equal(componentThree);
+      });
     });
   }
 });
