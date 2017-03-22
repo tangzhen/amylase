@@ -119,6 +119,21 @@ describe('Create Route', () => {
         expect(routeTwo.name).to.be.equal('routeTwo');
         expect(routeTwo.handler).to.be.equal(componentThree);
       });
+
+      it('should convert first child route to default route if it does not contain path', () => {
+        const routeConfig = {
+          name: 'appName',
+          path: '/',
+          component: componentOne,
+          routes: [{
+            component: componentTwo
+          }]
+        };
+
+        const route = createRoute(routeConfig);
+
+        expect(route.childRoutes[0].isDefault).to.be.true;
+      });
     });
   }
 });

@@ -18,9 +18,11 @@ function createRoute(options) {
 
     const createRoutes = (parentRoot, routes) => {
       if (Array.isArray(routes)) {
-        routes.forEach((route) => {
+        routes.forEach((route, index) => {
           if (ReactRouter.Redirect === route.component) {
             parentRoot.appendChild(ReactRouter.createRedirect(route));
+          } else if (index === 0 && route.path === undefined) {
+            parentRoot.appendChild(ReactRouter.createDefaultRoute(convertRouteOptions(route)));
           } else {
             const newRoute = ReactRouter.createRoute(convertRouteOptions(route));
             parentRoot.appendChild(newRoute);
