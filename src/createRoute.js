@@ -1,5 +1,5 @@
-import {ReactRouter013} from './version';
-import ReactRouter from 'react-router';
+const {ReactRouter013, ReactRouter3} = require('./version');
+const ReactRouter = require('react-router');
 
 function createRoute(options) {
   if (ReactRouter013) {
@@ -33,6 +33,26 @@ function createRoute(options) {
 
     createRoutes(route, options.routes);
     return route;
+  } else if (ReactRouter3) {
+    const createRoute = (route) => {
+      const {path, component} = route;
+      const result = {component};
+      if (path) {
+        result.path = path;
+      }
+
+      if (Array.isArray(route.routes)) {
+        if (route.routes[0].path === undefined) {
+          result.indexRoute = route.routes[0];
+          route.routes.shift();
+        }
+        result.childRoutes = route.routes.map(createRoute);
+      }
+
+      return result;
+    };
+
+    return createRoute(options);
   }
 }
 

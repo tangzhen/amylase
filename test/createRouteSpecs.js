@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Redirect} from 'react-router';
-import {ReactRouter013} from '../src/version';
+import {ReactRouter013, ReactRouter3} from '../src/version';
 import {createRoute} from '../build';
 import _ from 'lodash';
 
@@ -120,6 +120,36 @@ describe('Create Route', () => {
 
         expect(route.childRoutes[0].isDefault).to.be.true;
       });
+    });
+  }
+
+  if (ReactRouter3) {
+    it('should convert config to route', () => {
+      const routeConfig = {
+        name: 'appName',
+        path: '/',
+        component: componentOne,
+        routes: [{
+          component: componentTwo
+        }, {
+          name: 'routeOne',
+          path: 'one',
+          component: componentTwo,
+          routes: [{
+            name: 'routeTwo',
+            path: 'two',
+            component: componentThree
+          }]
+        }, {
+          name: '404',
+          from: '/*',
+          to: '/',
+          component: Redirect
+        }]
+      };
+
+      const route = createRoute(routeConfig);
+      console.log(route);
     });
   }
 });
