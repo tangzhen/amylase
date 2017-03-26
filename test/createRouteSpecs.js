@@ -149,7 +149,11 @@ describe('Create Route', () => {
       };
 
       const route = createRoute(routeConfig);
-      console.log(route);
+
+      expect(route.component).to.be.equal(componentOne);
+      expect(route.path).to.be.equal('/');
+      expect(route.indexRoute.component).to.be.equal(componentTwo);
+      expect(route.childRoutes).to.be.instanceof(Array);
     });
   }
 });

@@ -1,3 +1,4 @@
+const React = require('react');
 const ReactRouter = require('react-router');
 const {ReactRouter013, ReactRouter3} = require('./version');
 
@@ -10,4 +11,4 @@ function render(reactRender, routes, el, callback) {
   }
 }
 
-export default render();
+export default render;

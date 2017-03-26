@@ -23,6 +23,7 @@
     "babel-cli": "7.0.0-alpha.2",
     "babel-plugin-transform-export-extensions": "7.0.0-alpha.1",
     "babel-preset-env": "2.0.0-alpha.1",
+    "babel-preset-react": "^6.23.0",
     "babel-register": "7.0.0-alpha.2",
     "chai": "^3.5.0",
     "eslint": "^3.18.0",
