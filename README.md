@@ -46,7 +46,7 @@ component instead of mount component with router context.
 import {push, replace, goBack} from 'amylase';
 
 describe('Unit test', () => {
-  const RouterStub = require('../src').routerStub(sinon);
+  const RouterStub = require('amylase').routerStub(sinon);
   
   it('should push path', () => {
     // mount component with router props
