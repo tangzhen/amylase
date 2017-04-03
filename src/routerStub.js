@@ -1,7 +1,7 @@
 const {ReactRouter013, ReactRouter3} = require('./version');
 
 export default function(sinon) {
-  const RouterStub = {};
+  const RouterStub = () => {};
   if (ReactRouter013) {
     RouterStub.transitionTo = sinon.stub();
     RouterStub.replaceWith = sinon.stub();
