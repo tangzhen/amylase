@@ -6,13 +6,55 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
 }
 
-function withRouter(WrappedComponent) {
-  const WithRouter = React.createClass({
-    contextTypes: {
-      router: PropTypes.func
-    },
+class MemoryRouter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.history = {
+      location: {
+        pathname: ''
+      }
+    };
+    this.router = () => {};
+    if (ReactRouter013) {
+      this.router.transitionTo = (path) => {
+        this.history.location.pathname = path;
+      };
+    } else {
+      this.router.push = (path) => {
+        this.history.location.pathname = path;
+      };
+    }
 
-    render: function() {
+    this.router.replace = (path) => {
+      this.history.location.pathname = path;
+    };
+  }
+
+  render() {
+    const childrenWithProps = React.Children.map(this.props.children,
+      (child) => React.cloneElement(child, {
+        router: this.router
+      })
+    );
+
+    return <div>{childrenWithProps}</div>
+  }
+}
+
+function withRouter(WrappedComponent) {
+  class WithRouter extends React.Component {
+    static contextTypes = {
+      router: PropTypes.func
+    };
+
+    static propTypes = {
+      router: PropTypes.func
+    };
+
+    static dispalyName = `withRouter(${getDisplayName(WrappedComponent)})`;
+    static WrappedComponent = WrappedComponent;
+
+    render() {
       const router = this.props.router || this.context.router;
       if (!router) {
         return <WrappedComponent {...this.props} />
@@ -20,14 +62,7 @@ function withRouter(WrappedComponent) {
 
       return <WrappedComponent {...this.props} router={router} />;
     }
-  });
-
-  WithRouter.propTypes = {
-    router: PropTypes.func
-  };
-  WithRouter.displayName = `withRouter(${getDisplayName(WrappedComponent)})`;
-  WithRouter.WrappedComponent = WrappedComponent;
-
+  }
   return WithRouter;
 }
 
@@ -52,10 +87,6 @@ function push(component, path, params, query) {
   }
 }
 
-/*
-  >= 4, passing the this.props.history
-  < 4, passing the this.props.router
- */
 function replace(component, path, params, query) {
   if (ReactRouter013) {
     component.props.router.replaceWith(path, params, query);
@@ -70,6 +101,7 @@ function replace(component, path, params, query) {
 }
 
 const exports = {
+  MemoryRouter: ReactRouter4 ? require('react-router').MemoryRouter : MemoryRouter,
   withRouter: ReactRouter4 ? require('react-router').withRouter : withRouter,
   push,
   replace,

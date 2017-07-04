@@ -2,13 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 const sinon = require('sinon').sandbox.create();
 import {ReactRouter013, ReactRouter3, ReactRouter4} from '../src/version';
-import {withRouter, push, replace, goBack} from '../src';
-
-let MemoryRouter;
-if (ReactRouter4) {
-  const ReactRouter = require('react-router');
-  MemoryRouter = ReactRouter.MemoryRouter;
-}
+import {MemoryRouter, withRouter, push, replace, goBack} from '../src';
 
 describe('History modules', () => {
   const RouterStub = require('../src').routerStub(sinon);
@@ -16,9 +10,15 @@ describe('History modules', () => {
     render() {
       return (
         <div>
-          <h1 onClick={() => {push(this, '/push')}}>This is push</h1>
-          <h1 onClick={() => {push(this, '/replace')}}>This is replace</h1>
-          <h1 onClick={() => {push(this, '/goBack')}}>This is goBack</h1>
+          <h1 onClick={() => {
+            push(this, '/push')
+          }}>This is push</h1>
+          <h1 onClick={() => {
+            replace(this, '/replace')
+          }}>This is replace</h1>
+          <h1 onClick={() => {
+            goBack(this)
+          }}>This is goBack</h1>
         </div>
       );
     }
@@ -43,28 +43,29 @@ describe('History modules', () => {
     });
 
     testGoBackOfVersionLessThan4();
-  } else if (ReactRouter3) {
-    it('should invoke push on router when call push method', () => {
-      push(RouterStub, 'path');
-
-      expect(RouterStub.push.calledWith('path')).to.be.true;
-    });
-
-    it('should invoke replace on router when call replace method', () => {
-      replace(RouterStub, 'path');
-
-      expect(RouterStub.replace.calledWith('path')).to.be.true;
-    });
-
-    testGoBackOfVersionLessThan4();
-  } else if (ReactRouter4) {
-    it('should call history push after user click the push div', () => {
-      const component = mount(<MemoryRouter><WrappedComponent /></MemoryRouter>);
-
-      component.find('h1').first().simulate('click');
-      expect(component.instance().history.location.pathname).to.be.equal('/push');
-    });
   }
+
+  it('should invoke push on router when call push method', () => {
+    const component = mount(<MemoryRouter><WrappedComponent /></MemoryRouter>);
+
+    component.find('h1').first().simulate('click');
+    expect(component.instance().history.location.pathname).to.be.equal('/push');
+  });
+
+  it('should invoke replace on router when call replace method', () => {
+    const component = mount(<MemoryRouter><WrappedComponent /></MemoryRouter>);
+
+    component.find('h1').at(1).simulate('click');
+    expect(component.instance().history.location.pathname).to.be.equal('/replace');
+  });
+
+  it('should invoke goBack on router when call goBack method', () => {
+    const component = mount(<MemoryRouter initialEntries={['/one', '/two']}
+                                          initialIndex={1}><WrappedComponent /></MemoryRouter>);
+
+    component.find('h1').at(2).simulate('click');
+    expect(component.instance().history.location.pathname).to.be.equal('/one');
+  });
 
   function testGoBackOfVersionLessThan4() {
     it('should invoke goBack on router when call goBack method', () => {
