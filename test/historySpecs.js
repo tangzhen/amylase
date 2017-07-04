@@ -29,22 +29,6 @@ describe('History modules', () => {
     sinon.reset();
   });
 
-  if (ReactRouter013) {
-    it('should invoke transitionTo on router when call push method', () => {
-      push(RouterStub, 'path');
-
-      expect(RouterStub.transitionTo.calledWith('path')).to.be.true;
-    });
-
-    it('should invoke replaceWith on router when call replace method', () => {
-      replace(RouterStub, 'path');
-
-      expect(RouterStub.replaceWith.calledWith('path')).to.be.true;
-    });
-
-    testGoBackOfVersionLessThan4();
-  }
-
   it('should invoke push on router when call push method', () => {
     const component = mount(<MemoryRouter><WrappedComponent /></MemoryRouter>);
 

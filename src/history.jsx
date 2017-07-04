@@ -1,4 +1,5 @@
 const React = require('react');
+const _ = require('lodash');
 const PropTypes = require('prop-types');
 const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
 
@@ -11,7 +12,7 @@ class MemoryRouter extends React.Component {
     super(props);
     this.history = {
       location: {
-        pathname: ''
+        pathname: _.get(props, `initialEntries[${props.initialIndex}]`) || '/'
       }
     };
     this.router = () => {};
@@ -19,16 +20,29 @@ class MemoryRouter extends React.Component {
       this.router.transitionTo = (path) => {
         this.history.location.pathname = path;
       };
+      this.router.replaceWith = (path) => {
+        this.history.location.pathname = path;
+      };
     } else {
       this.router.push = (path) => {
         this.history.location.pathname = path;
       };
+      this.router.replace = (path) => {
+        this.history.location.pathname = path;
+      };
     }
 
-    this.router.replace = (path) => {
-      this.history.location.pathname = path;
+    this.index = props.initialIndex;
+
+    this.router.goBack = () => {
+      this.history.location.pathname = _.get(this.props, `initialEntries[${this.index - 1}]`) || this.history.location.pathname;
     };
   }
+
+  static propTypes = {
+    initialEntries: PropTypes.array,
+    initialIndex: PropTypes.number
+  };
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children,
