@@ -1,4 +1,4 @@
-const {ReactRouter013, ReactRouter3} = require('./version');
+const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
 
 export default function(sinon) {
   const RouterStub = () => {};
@@ -12,6 +12,8 @@ export default function(sinon) {
     RouterStub.replace = sinon.stub();
     RouterStub.pushStub = RouterStub.push;
     RouterStub.replaceStub = RouterStub.replace;
+  } else if (ReactRouter4) {
+
   }
 
   RouterStub.goBack = sinon.stub();

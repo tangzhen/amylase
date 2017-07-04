@@ -1,3 +1,4 @@
 --compilers js:babel-register,jsx:babel-register
 --extensions js,jsx
 --reporter dot
+--require ./test/setup
