@@ -2,10 +2,9 @@ import React from 'react';
 import {mount} from 'enzyme';
 const sinon = require('sinon').sandbox.create();
 import {ReactRouter013, ReactRouter3, ReactRouter4} from '../src/version';
-import {MemoryRouter, withRouter, push, replace, goBack} from '../src';
+import {MemoryRouter, withRouter, push, replace, goBack} from '../build';
 
 describe('History modules', () => {
-  const RouterStub = require('../src').routerStub(sinon);
   class Component extends React.Component {
     render() {
       return (
@@ -50,25 +49,4 @@ describe('History modules', () => {
     component.find('h1').at(2).simulate('click');
     expect(component.instance().history.location.pathname).to.be.equal('/one');
   });
-
-  function testGoBackOfVersionLessThan4() {
-    it('should invoke goBack on router when call goBack method', () => {
-      goBack(RouterStub);
-
-      expect(RouterStub.goBack.called).to.be.true;
-      expect(RouterStub.goBackStub.called).to.be.true;
-    });
-
-    it('should use push stub method do assertion', () => {
-      push(RouterStub, 'path');
-
-      expect(RouterStub.pushStub.calledWith('path')).to.be.true;
-    });
-
-    it('should use replace stub method do assertion', () => {
-      replace(RouterStub, 'path');
-
-      expect(RouterStub.replaceStub.calledWith('path')).to.be.true;
-    });
-  }
 });
