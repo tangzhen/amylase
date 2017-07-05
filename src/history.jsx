@@ -58,11 +58,11 @@ class MemoryRouter extends React.Component {
 function withRouter(WrappedComponent) {
   class WithRouter extends React.Component {
     static contextTypes = {
-      router: PropTypes.func
+      router: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
     };
 
     static propTypes = {
-      router: PropTypes.func
+      router: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
     };
 
     static dispalyName = `withRouter(${getDisplayName(WrappedComponent)})`;
