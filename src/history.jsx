@@ -5,16 +5,16 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
 }
 
-const {func} = React.PropTypes;
+const {oneOfType, func, object} = React.PropTypes;
 
 function withRouter(WrappedComponent) {
   const WithRouter = React.createClass({
     contextTypes: {
-      router: func
+      router: oneOfType([func, object])
     },
 
     propTypes: {
-      router: func
+      router: oneOfType([func, object])
     },
 
     render: function() {
