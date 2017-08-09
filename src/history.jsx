@@ -66,6 +66,12 @@ class MemoryRouter extends React.Component {
       this.history.location.pathname = _.get(this.props, `initialEntries[${this.index - 1}]`) || this.history.location.pathname;
       this.history.goBack();
     };
+    this.router.getCurrentParams = ()=> {
+    };
+    this.router.getCurrentQuery = () => {
+    };
+    this.router.getCurrentPathname = ()=> this.history.location.pathname
+
   }
 
   static propTypes = {
@@ -99,11 +105,20 @@ function withRouter(WrappedComponent) {
 
     render() {
       const router = this.props.router || this.context.router;
+      const match = {
+        params: router.getCurrentParams(),
+        url: router.getCurrentPathname()
+      };
+      const location = {
+        search: transformQueryToSearch(router.getCurrentQuery()),
+        pathname: router.getCurrentPathname()
+      };
+
       if (!router) {
         return <WrappedComponent {...this.props} />
       }
 
-      return <WrappedComponent {...this.props} router={router} />;
+      return <WrappedComponent {...this.props} router={router} match={match} location={location}/>;
     }
   }
   return WithRouter;
