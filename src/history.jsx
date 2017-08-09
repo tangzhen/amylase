@@ -2,40 +2,12 @@ const React = require('react');
 const _ = require('lodash');
 const PropTypes = require('prop-types');
 const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
+const {getLocation, transformQueryToSearch} = require('./utils');
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
 }
-function getLocation(path, pushState) {
-  let search, pathname, state;
-  if (typeof path === 'string') {
-    const searchIndex = path.indexOf('?');
-    if (searchIndex !== -1) {
-      search = path.substr(searchIndex);
-      pathname = path.substr(0, searchIndex)
-    } else {
-      pathname = path;
-      search = ''
-    }
-    state = pushState;
-  } else {
-    if (path.search) {
-      const isSearchStartWith = path.search.charAt(0) !== '?';
-      search = isSearchStartWith ? '?' + path.search: path.search;
-    } else {
-      search = ''
-    }
-    pathname = !!path.pathname ? path.pathname : '';
-    state = !! path.state ? path.state: {}
-  }
-  return {pathname, state, search: search === '?' ? '' : search};
-}
-function transformQueryToSearch(query) {
-  return _.chain(query)
-    .map((value, key)=> `${key}=${value}`)
-    .join('&')
-    .value();
-}
+
 class MemoryRouter extends React.Component {
   constructor(props) {
     super(props);
