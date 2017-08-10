@@ -1,3 +1,3 @@
-export createRoute from './createRoute';
+export {createRoute, createRouteComponentWithConfig} from './createRoute';
 export render from './render';
 export {MemoryRouter, withRouter, push, replace, goBack} from './history';

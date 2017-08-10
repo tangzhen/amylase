@@ -1,4 +1,4 @@
-const {ReactRouter013, ReactRouter3} = require('./version');
+const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
 const ReactRouter = require('react-router');
 
 function createRoute(options) {
@@ -56,4 +56,36 @@ function createRoute(options) {
   }
 }
 
-export default createRoute;
+const createRouteComponentWithConfig = (routerConfig, createElement) => {
+  if (ReactRouter013) {
+    const createRouteComponent = (config, childRoutes) => {
+      let routeType;
+      const {name, path, component} = config;
+      if (!!path) {
+        routeType = Route;
+      } else {
+        routeType = DefaultRoute;
+      }
+      return createElement(routeType, {
+        name,
+        path,
+        handler: component
+      }, ...childRoutes);
+    };
+
+    let childRoutes = [];
+    if (Array.isArray(routerConfig.routes)) {
+      childRoutes = routerConfig.routes.map((route, index) => createRouteComponentWithConfig(route));
+    }
+    return createRouteComponent(routerConfig, childRoutes);
+  }
+
+  if(ReactRouter4) {
+
+  }
+};
+
+module.exports = {
+  createRoute,
+  createRouteComponentWithConfig
+};
