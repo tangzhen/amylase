@@ -112,7 +112,7 @@ const createRouteComponentWithConfig = (routerConfig, createElement) => {
       }
       if (Array.isArray(routerConfig.routes)) {
         const childRoutesConfig = routerConfig.routes;
-        _.forEach(childRoutesConfig, (routeConfig) => {
+        childRoutesConfig.forEach((routeConfig) => {
           newConfigs.push(...createNewConfig(routeConfig, currentAbsolutePath));
         });
       }
