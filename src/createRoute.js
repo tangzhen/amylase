@@ -57,7 +57,9 @@ function createRoute(options) {
 }
 
 const createRouteComponentWithConfig = (routerConfig, createElement) => {
+  const {Route, DefaultRoute} = ReactRouter;
   if (ReactRouter013) {
+
     const createRouteComponent = (config, childRoutes) => {
       let routeType;
       const {name, path, component} = config;
@@ -77,11 +79,51 @@ const createRouteComponentWithConfig = (routerConfig, createElement) => {
     if (Array.isArray(routerConfig.routes)) {
       childRoutes = routerConfig.routes.map((route, index) => createRouteComponentWithConfig(route));
     }
+
     return createRouteComponent(routerConfig, childRoutes);
-  }
 
-  if(ReactRouter4) {
+  } else if (ReactRouter4) {
 
+    const createRouteComponent = (config) => {
+      const {path, component} = config;
+      return createElement(Route, {
+        path,
+        component,
+        exact: true
+      });
+    };
+
+    const createNewConfig = (routerConfig, parentPath) => {
+      let currentAbsolutePath;
+      let newConfigs = [];
+      const {path, component} = routerConfig;
+      if (!!parentPath) {
+        if (!!component) {
+          if (!!path) {
+            currentAbsolutePath = `${parentPath}/${path}`;
+          } else {
+            currentAbsolutePath = parentPath;
+          }
+          newConfigs.push({path: currentAbsolutePath, component});
+        }
+        currentAbsolutePath = `${parentPath}/${path}`;
+      } else {
+        currentAbsolutePath = path;
+      }
+      if (Array.isArray(routerConfig.routes)) {
+        const childRoutesConfig = routerConfig.routes;
+        _.forEach(childRoutesConfig, (routeConfig) => {
+          newConfigs.push(...createNewConfig(routeConfig, currentAbsolutePath));
+        });
+      }
+      return newConfigs;
+    };
+
+    const newRouterConfigs = createNewConfig(routerConfig);
+    const flowRouteHandler = routerConfig.component;
+    const flowRoutes = newRouterConfigs.map(routeConfig => createRouteComponent(routeConfig));
+
+    return createElement(flowRouteHandler, null, ...flowRoutes);
   }
 };
 
