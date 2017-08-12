@@ -1,13 +1,16 @@
 const React = require('react');
 const ReactRouter = require('react-router');
-const {ReactRouter013, ReactRouter3} = require('./version');
+const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
 
-function render(reactRender, routes, el, callback) {
+function render(reactRender, history, routes, el, callback) {
   if (ReactRouter013) {
-    ReactRouter.run([routes], ReactRouter.HistoryLocation, callback);
+    ReactRouter.run([routes], history, callback);
   } else if (ReactRouter3) {
     const Router = ReactRouter.Router;
-    reactRender(<Router routes={routes} history={ReactRouter.browserHistory}/>, el);
+    reactRender(<Router routes={routes} history={history}/>, el);
+  } else if (ReactRouter4) {
+    const Router = ReactRouter.Router;
+    reactRender(<Router history={history}>{routes}</Router>, el);
   }
 }
 
