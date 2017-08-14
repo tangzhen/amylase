@@ -1,5 +1,6 @@
 # amylase
 [![npm version](https://img.shields.io/npm/v/amylase.svg?style=flat-square)](https://www.npmjs.org/package/amylase)
+[![build status](https://img.shields.io/travis/tangzhen/amylase.svg?style=flat-square)](https://travis-ci.org/tangzhen/amylase)
 
 This package is used help you upgrade the react-router old version(0.13.x) to newer version(3.x).
 
