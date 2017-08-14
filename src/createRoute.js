@@ -56,14 +56,14 @@ function createRoute(options) {
   }
 }
 
-const createRouteComponentWithConfig = (routerConfig, createElement) => {
+const createRouteComponentWithConfig = (routerConfig, createElement, isFirst=true) => {
   const {Route, DefaultRoute} = ReactRouter;
   if (ReactRouter013) {
 
     const createRouteComponent = (config, childRoutes) => {
       let routeType;
       const {name, path, component} = config;
-      if (!!path) {
+      if (!!path || isFirst) {
         routeType = Route;
       } else {
         routeType = DefaultRoute;
@@ -77,7 +77,7 @@ const createRouteComponentWithConfig = (routerConfig, createElement) => {
 
     let childRoutes = [];
     if (Array.isArray(routerConfig.routes)) {
-      childRoutes = routerConfig.routes.map((route, index) => createRouteComponentWithConfig(route));
+      childRoutes = routerConfig.routes.map((route, index) => createRouteComponentWithConfig(route, createElement, false));
     }
 
     return createRouteComponent(routerConfig, childRoutes);
