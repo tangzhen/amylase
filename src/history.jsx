@@ -100,7 +100,7 @@ function withRouter(WrappedComponent) {
       router: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
     };
 
-    static dispalyName = `withRouter(${getDisplayName(WrappedComponent)})`;
+    static displayName = `withRouter(${getDisplayName(WrappedComponent)})`;
     static WrappedComponent = WrappedComponent;
 
     render() {
