@@ -56,7 +56,7 @@ function createRoute(options) {
   }
 }
 
-const createRouteComponentWithConfig = (routerConfig, createElement, isFirst=true) => {
+function createRouteComponentWithConfig(routerConfig, createElement, isFirst=true){
   const {Route, DefaultRoute} = ReactRouter;
   if (ReactRouter013) {
 
