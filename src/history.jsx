@@ -138,10 +138,7 @@ function push(component, path, params, query) {
   } else if (ReactRouter3) {
     component.props.router.push(path, params, query);
   } else if (ReactRouter4) {
-    component.props.history.push({
-      pathname: path,
-      search: query
-    });
+    component.props.history.push(path);
   }
 }
 
@@ -151,10 +148,7 @@ function replace(component, path, params, query) {
   } else if (ReactRouter3) {
     component.props.router.replace(path, params, query);
   } else if (ReactRouter4) {
-    component.props.history.replace({
-      pathname: path,
-      search: query
-    });
+    component.props.history.replace(path);
   }
 }
 
