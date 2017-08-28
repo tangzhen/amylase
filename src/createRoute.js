@@ -100,7 +100,7 @@ function createRouteComponentWithConfig(routerConfig, createElement, isFirst=tru
       if (!!parentPath) {
         if (!!component) {
           if (!!path) {
-            currentAbsolutePath = `${parentPath}/${path}`;
+            currentAbsolutePath = parentPath === '/' ? `/${path}` :`${parentPath}/${path}`;
           } else {
             currentAbsolutePath = parentPath;
           }
