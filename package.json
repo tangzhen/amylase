@@ -25,6 +25,7 @@
     "url": "git+https://github.com/tangzhen/amylase.git"
   },
   "dependencies": {
+    "path-to-regexp": "^2.0.0",
     "prop-types": "^15.5.10"
   },
   "devDependencies": {
