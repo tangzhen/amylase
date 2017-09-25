@@ -71,13 +71,27 @@ class MemoryRouter extends React.Component {
     this.router.getCurrentQuery = () => {
     };
     this.router.getCurrentPathname = ()=> this.history.location.pathname
-
   }
 
   static propTypes = {
     initialEntries: PropTypes.array,
     initialIndex: PropTypes.number,
   };
+
+  static childContextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
+  getChildContext() {
+    return {
+      router: {
+        history: this.history,
+        route: {
+          location: this.history.location
+        }
+      }
+    }
+  }
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children,
@@ -105,10 +119,6 @@ function withRouter(WrappedComponent) {
 
     render() {
       const router = this.props.router || this.context.router;
-      const match = {
-        params: router.getCurrentParams(),
-        url: router.getCurrentPathname()
-      };
       const location = {
         search: transformQueryToSearch(router.getCurrentQuery()),
         pathname: router.getCurrentPathname()
@@ -118,7 +128,7 @@ function withRouter(WrappedComponent) {
         return <WrappedComponent {...this.props} />
       }
 
-      return <WrappedComponent {...this.props} router={router} match={match} location={location}/>;
+      return <WrappedComponent {...this.props} router={router} location={location}/>;
     }
   }
   return WithRouter;

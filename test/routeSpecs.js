@@ -19,7 +19,7 @@ describe('route', () => {
 
   it('should passing the match to component', () => {
     const component = mount(
-      <MemoryRouter initialEntries={['/home/123/zhen']}>
+      <MemoryRouter initialEntries={['/home/123/zhen']} initialIndex={0}>
         <Route render={props => <WrappedComponent {...props}/>} path="/home/:id/:name" />
       </MemoryRouter>
     );

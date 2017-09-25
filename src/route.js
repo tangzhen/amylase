@@ -57,15 +57,15 @@ class Route extends React.Component {
     const { route } = router;
     const pathname = (location || route.location).pathname;
 
-    return path ? matchPath(pathname, { path, strict, exact, sensitive }) : route.match
+    return matchPath(pathname, { path, strict, exact, sensitive });
   }
 
   render() {
     const { match } = this.state;
-    const { children, component, render } = this.props;
+    const { children, component, render, router } = this.props;
     const { history, route, staticContext } = this.context.router;
     const location = this.props.location || route.location;
-    const props = { match, location, history, staticContext };
+    const props = { match, location, history, staticContext, router};
 
     if (component)
       return match ? React.createElement(component, props) : null;
