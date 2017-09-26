@@ -1,26 +1,29 @@
 const React = require('react');
 const _ = require('lodash');
+const url = require('url');
+const querystring = require('querystring');
 const PropTypes = require('prop-types');
 const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
 const {getLocation, transformQueryToSearch} = require('./utils');
 
 function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component'
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
 class MemoryRouter extends React.Component {
   constructor(props) {
     super(props);
+    const urlObj = url.parse(_.get(props, `initialEntries[${props.initialIndex}]`) || '/');
     this.history = {
       entries: [],
       location: {
-        pathname: _.get(props, `initialEntries[${props.initialIndex}]`) || '/',
-        search: '',
+        pathname: urlObj.pathname,
+        search: urlObj.search,
         state: {}
       },
       action: '',
       push: (path, pushState) => {
-        const { pathname, search, state } = getLocation(path, pushState);
+        const {pathname, search, state} = getLocation(path, pushState);
         this.history.location = {
           pathname,
           search,
@@ -29,7 +32,7 @@ class MemoryRouter extends React.Component {
         this.history.action = 'PUSH';
       },
       replace: (path, pushState) => {
-        const { pathname, search, state } = getLocation(path, pushState);
+        const {pathname, search, state} = getLocation(path, pushState);
         this.history.location = {
           pathname,
           search,
@@ -39,10 +42,13 @@ class MemoryRouter extends React.Component {
       },
       goBack: () => {
         this.history.action = 'POP';
-        this.history.location.pathname = _.get(props, `initialEntries[${props.initialIndex -1}]`) || '/'
+        const urlObj = url.parse(_.get(props, `initialEntries[${props.initialIndex - 1}]`) || '/');
+        this.history.location.pathname = urlObj.pathname;
+        this.history.location.search = urlObj.search;
       }
     };
-    this.router = () => {};
+    this.router = () => {
+    };
     if (ReactRouter013) {
       this.router.transitionTo = (path, params, query) => {
         //TODO: map the params to path.
@@ -63,19 +69,26 @@ class MemoryRouter extends React.Component {
     this.index = props.initialIndex;
 
     this.router.goBack = () => {
-      this.history.location.pathname = _.get(this.props, `initialEntries[${this.index - 1}]`) || this.history.location.pathname;
       this.history.goBack();
+      const urlObj = url.parse(_.get(this.props, `initialEntries[${this.index - 1}]`) || this.history.location.pathname);
+      this.history.location.pathname = urlObj.pathname;
+      this.history.location.search = urlObj.search;
     };
-    this.router.getCurrentParams = ()=> {
+    this.router.getCurrentParams = () => {
     };
     this.router.getCurrentQuery = () => {
+      if (typeof this.history.location.search === 'string') {
+        return querystring.parse(url.parse(this.history.location.search).query)
+      } else {
+        return {};
+      }
     };
-    this.router.getCurrentPathname = ()=> this.history.location.pathname
+    this.router.getCurrentPathname = () => this.history.location.pathname;
   }
 
   static propTypes = {
     initialEntries: PropTypes.array,
-    initialIndex: PropTypes.number,
+    initialIndex: PropTypes.number
   };
 
   static childContextTypes = {
@@ -90,7 +103,7 @@ class MemoryRouter extends React.Component {
           location: this.history.location
         }
       }
-    }
+    };
   }
 
   render() {
@@ -100,7 +113,7 @@ class MemoryRouter extends React.Component {
       })
     );
 
-    return <div>{childrenWithProps}</div>
+    return <div>{childrenWithProps}</div>;
   }
 }
 
@@ -125,12 +138,13 @@ function withRouter(WrappedComponent) {
       };
 
       if (!router) {
-        return <WrappedComponent {...this.props} />
+        return <WrappedComponent {...this.props} />;
       }
 
       return <WrappedComponent {...this.props} router={router} location={location}/>;
     }
   }
+
   return WithRouter;
 }
 
