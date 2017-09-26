@@ -142,11 +142,17 @@ function withRouter(WrappedComponent) {
         pathname: router.getCurrentPathname()
       };
 
+      let routerMatch = {};
+      if (typeof this.context.router.match === 'function') {
+        routerMatch = this.context.router.match(router.getCurrentPathname());
+      }
+      const match = this.props.match || routerMatch;
+
       if (!router) {
         return <WrappedComponent {...this.props} />;
       }
 
-      return <WrappedComponent {...this.props} router={router} location={location}/>;
+      return <WrappedComponent {...this.props} router={router} location={location} match={match}/>;
     }
   }
 
