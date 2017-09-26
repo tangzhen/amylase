@@ -1,7 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
 const sinon = require('sinon').sandbox.create();
-import {ReactRouter013, ReactRouter3, ReactRouter4} from '../src/version';
 import {MemoryRouter, withRouter, push, replace, goBack} from '../build';
 
 describe('History modules', () => {
@@ -18,6 +17,9 @@ describe('History modules', () => {
           <h1 onClick={() => {
             goBack(this)
           }}>This is goBack</h1>
+          <h1 onClick={() => {
+            push(this, '/push?withParams=true')
+          }}>This is push</h1>
         </div>
       );
     }
@@ -48,5 +50,13 @@ describe('History modules', () => {
 
     component.find('h1').at(2).simulate('click');
     expect(component.instance().history.location.pathname).to.be.equal('/one');
+  });
+
+  it('should generate correct pathname and search', () => {
+    const component = mount(<MemoryRouter><WrappedComponent /></MemoryRouter>);
+
+    component.find('h1').at(3).simulate('click');
+    expect(component.instance().history.location.pathname).to.be.equal('/push');
+    expect(component.instance().history.location.search).to.be.equal('?withParams=true');
   });
 });
