@@ -1,6 +1,6 @@
 {
   "name": "amylase",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "react router creator",
   "main": "build",
   "scripts": {
