@@ -2,6 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 const sinon = require('sinon').sandbox.create();
 import {MemoryRouter, withRouter, push, replace, goBack} from '../build';
+const Link = require('react-router').Link || require('react-router-dom').Link;
 
 describe('History modules', () => {
   class Component extends React.Component {
@@ -58,5 +59,12 @@ describe('History modules', () => {
     component.find('h1').at(3).simulate('click');
     expect(component.instance().history.location.pathname).to.be.equal('/push');
     expect(component.instance().history.location.search).to.be.equal('?withParams=true');
+  });
+
+  it('should Link correct', () => {
+    const component = mount(<MemoryRouter><Link to={'/new-url'}/></MemoryRouter>);
+
+    component.find('Link').simulate('click', {button: 0});
+    expect(component.instance().history.location.pathname).to.be.equal('/new-url');
   });
 });

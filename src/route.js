@@ -26,15 +26,15 @@ class Route extends React.Component {
   };
 
   static contextTypes = {
-    router: PropTypes.shape({
+    router: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({
       history: PropTypes.object.isRequired,
       route: PropTypes.object.isRequired,
       staticContext: PropTypes.object
-    })
+    })])
   };
 
   static childContextTypes = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   };
 
   getChildContext() {

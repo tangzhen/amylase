@@ -66,6 +66,7 @@ class MemoryRouter extends React.Component {
       this.router.makeHref = (to, params, query) => {
         return buildPathWithParamAndQuery(to, params, query);
       };
+      this.router.isActive = () => {}
     } else {
       this.router.push = (path, state) => {
         this.history.push(path, state);
@@ -100,17 +101,17 @@ class MemoryRouter extends React.Component {
   };
 
   static childContextTypes = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   };
 
   getChildContext() {
+    const router = this.router;
+    router.history = this.history;
+    router.route = {
+      location: this.history.location
+    };
     return {
-      router: {
-        history: this.history,
-        route: {
-          location: this.history.location
-        }
-      }
+      router: router
     };
   }
 
