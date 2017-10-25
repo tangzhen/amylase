@@ -4,7 +4,7 @@ const url = require('url');
 const querystring = require('querystring');
 const PropTypes = require('prop-types');
 const {ReactRouter013, ReactRouter3, ReactRouter4} = require('./version');
-const {getLocation, transformQueryToSearch} = require('./utils');
+const {getLocation, transformQueryToSearch, buildPathWithParamAndQuery} = require('./utils');
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -62,6 +62,9 @@ class MemoryRouter extends React.Component {
       this.router.replaceWith = (path, params, query) => {
         //TODO: map the params to path.
         this.history.replace({pathname: path, search: transformQueryToSearch(query)});
+      };
+      this.router.makeHref = (to, params, query) => {
+        return buildPathWithParamAndQuery(to, params, query);
       };
     } else {
       this.router.push = (path, state) => {

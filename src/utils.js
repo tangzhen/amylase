@@ -24,6 +24,7 @@ function getLocation(path, pushState) {
   }
   return {pathname, state, search: search === '?' ? '' : search};
 }
+
 function transformQueryToSearch(query) {
   const queryString = _.chain(query)
     .map((value, key)=> `${key}=${value}`)
@@ -33,7 +34,25 @@ function transformQueryToSearch(query) {
   return `?${queryString}`;
 }
 
+function buildPathWithParamAndQuery(path, params, query) {
+  const replaceParams = halfPath => _.startsWith(halfPath, ':') ? params[halfPath.slice(1)] : halfPath;
+  const search = _.chain(query)
+    .pickBy(_.identity)
+    .map((key, value) => `${value}=${key}`)
+    .join('&')
+    .value();
+
+  const newRoutePath = _.chain(path)
+    .split('/')
+    .map(replaceParams)
+    .join('/')
+    .value();
+
+  return _.isEmpty(search) ? newRoutePath : `${newRoutePath}?${search}`;
+}
+
 module.exports = {
   getLocation,
-  transformQueryToSearch
+  transformQueryToSearch,
+  buildPathWithParamAndQuery
 };
