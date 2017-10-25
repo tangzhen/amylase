@@ -8,11 +8,10 @@
     "build": "babel src --out-dir build",
     "clean": "rimraf build",
     "lint": "eslint --ext js,jsx src test",
-    "test": "npm run clean && npm run build && npm run reactrouter:13 && npm run test:only && npm run reactrouter:3 && npm run test:only && npm run reactrouter:4 && npm run test:only",
+    "test": "npm run clean && npm run build && npm run reactrouter:13 && npm run test:only && npm run reactrouter:4 && npm run test:only",
     "test:only": "mocha --recursive test",
     "reactrouter:clean": "rimraf node_modules/react-router node_modules/react-router-dom",
     "reactrouter:13": "npm run reactrouter:clean && npm i react-router@0.13.6 --no-save",
-    "reactrouter:3": "npm run reactrouter:clean && npm i react-router@3.0.5 --no-save",
     "reactrouter:4": "npm run reactrouter:clean && npm i react-router@4.2.0 react-router-dom@4.2.2 --no-save"
   },
   "keywords": [
