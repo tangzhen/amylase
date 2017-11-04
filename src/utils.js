@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const qs = require('qs');
 
 function getLocation(path, pushState) {
   let search, pathname, state;
@@ -26,10 +27,7 @@ function getLocation(path, pushState) {
 }
 
 function transformQueryToSearch(query) {
-  const queryString = _.chain(query)
-    .map((value, key)=> `${key}=${value}`)
-    .join('&')
-    .value();
+  const queryString = qs.stringify(query);
 
   return `?${queryString}`;
 }
