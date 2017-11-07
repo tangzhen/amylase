@@ -51,17 +51,10 @@ class MemoryRouter extends React.Component {
     };
     if (ReactRouter013) {
       this.router.transitionTo = (path, params, query) => {
-        //TODO: map the params to path.
-        if (!_.isEmpty(query)) {
-          this.history.push({pathname: path, search: transformQueryToSearch(query)});
-        } else {
-          const {pathname, search} = url.parse(path);
-          this.history.push({pathname, search})
-        }
+        this.history.push(path);
       };
       this.router.replaceWith = (path, params, query) => {
-        //TODO: map the params to path.
-        this.history.replace({pathname: path, search: transformQueryToSearch(query)});
+        this.history.replace(path);
       };
       this.router.makeHref = (to, params, query) => {
         return buildPathWithParamAndQuery(to, params, query);
